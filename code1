@@ -1,0 +1,23 @@
+bin/bash
+case $1 in
+        "-d")
+            domain=$2
+            if [[ -z ${domain} ]];then
+                    echo "Error: must provide domain, check -h/--help"
+                    exit 128
+            fi
+            while read sub;do
+                    if host "$sub.$domain" &> /dev/null;then
+                            echo "$sub.$domain"
+                    fi
+            done < wordlist
+                ;;
+        "-h"|"--help")
+                echo "-d DOMAIN: Provide domain name"
+                echo "-h/--help: Show help"
+                ;;
+        *)
+                echo "Error: $0 $1 invalid argument, check -h/--help"
+                exit 127
+                ;;
+esac
