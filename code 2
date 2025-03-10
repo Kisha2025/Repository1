@@ -1,0 +1,102 @@
+#!/bin/bash
+make_file() {
+        read -p "enter the filename to create: " filename
+        if [[ -e "$filename" ]]
+        then
+                echo "Error: file already exist!"
+        else
+                read -p "Enter the data for the file: " data
+                echo "$data" > filename
+                echo " File created successfully!"
+        fi
+}
+display_contents(){
+        read -p "Enter the filename to display: " filename
+        if [[ -e "$filename" ]]
+        then
+        echo "\nFile contents:\n"
+        cat $filename
+        else
+        echo "ERROR: File does not exits."
+        fi
+}
+copy_file(){
+        read -p "Enter the source filename: " source
+        if [[ ! -e "$source" ]] && [[ -r "$source" ]]
+        then
+                echo "ERROR: File does not exists."
+
+        else
+                echo "Source file  exist!"
+                cat $source
+        fi
+        read -p "Enter the target filename: " target
+        if [[ -e "$target" ]]
+        then
+                echo " ERROR: target file already exist !"
+        fi
+        cp "$source" "$target"
+        echo "File copied successfully" 
+}
+rename_file(){
+        read -p "Enter the current filename:" source
+        if [[ -e "$source" ]]
+        then
+                echo "ERROR: File does not exists."
+        fi
+        read -p "Enter the new filename: " target
+        if [[ -e "$target" ]]
+        then
+                echo "ERROR: Target file name already exits."
+        fi
+        mv "$source" "$target"
+        echo "File renamed successfully!"
+}
+delete_file(){
+        read -p "Enter the filename to delete: " filename
+        if [[ ! -e "$filename" ]]
+        then
+                echo " ERROR: file does not exist" 
+        fi
+        if [[ ! -w "$filename" ]]
+        then
+                echo "ERROR: file is not writable"
+        fi
+        read -p "Are you sure you want to delete the file? (Yes/No)" delete
+        if [[ "$delete" = "Yes" ]]
+        then
+                rm $filename
+                echo " file deleted successfully!"
+        else
+                echo "file does not deleted" 
+        fi
+}
+while true 
+do
+        echo " $filename"
+        echo "1.) Make a file."
+        echo "2.) Display the file contents."
+        echo "3.) Copy the file."
+        echo "4.) Rename the file."
+        echo "5.) Delete the file."
+        echo "6.) EXIT"
+
+        read -p "Enter Your Option: " choice
+        case "$choice" in
+                1) make_file
+                ;;
+                2)display_contents
+                ;;
+                3) copy_file
+                ;;
+                4) rename_file
+                ;;
+                5) delete_file
+                ;;
+                6) echo "Exiting.."
+                           exit
+                ;;
+               *) echo "Error: Please choose a valid option" 
+                ;;
+       esac
+done
